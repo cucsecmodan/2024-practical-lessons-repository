@@ -1,10 +1,3 @@
----
-
-marp: true
-paginate: true
-footer: 网络安全能力课程录制培训
-
-
 
 ## 课程内容
 
