@@ -188,15 +188,15 @@ hashcat -a 6 9ca5485734555ce5ea3c1d1141e7c41d pwd1.txt ?l?l?l
 ------
 
 # Hashcat的实战
-
+实战环境：VMware kali-linux-2023
 ## MD5
 #### 8位MD5加密的数字破解
 ```bash
-#对 23323323 进行 MD5 加密：
-$ echo -n 23323323 |openssl md5
-5a745e31dbbd93f4c86d1ef82281688b
+#对 22222222 进行 MD5 加密：
+$ echo -n 22222222 |openssl md5
+bae5e3208a3c700e3db642b6631e95b9
 #使用 Hashcat 来进行破解：
-hashcat -a 3 -m 0 --force '5a745e31dbbd93f4c86d1ef82281688b' '?d?d?d?d?d?d?d?d' -O
+hashcat -a 3 -m 0 --force 'bae5e3208a3c700e3db642b6631e95b9' '?d?d?d?d?d?d?d?d'
 ```
 
 #### 8位MD5加密的大小写字母破解
@@ -204,26 +204,26 @@ hashcat -a 3 -m 0 --force '5a745e31dbbd93f4c86d1ef82281688b' '?d?d?d?d?d?d?d?d' 
 $ echo -n PassWord |openssl md5
 a9d402bfcde5792a8b531b3a82669585
 #使用 Hashcat 来进行破解：
-hashcat -a 3 -m 0 -1 '?l?u' --force  'a9d402bfcde5792a8b531b3a82669585' '?1?1?1?1?1?1?1?1' -O
+hashcat -a 3 -m 0 -1 '?l?u' --force  'a9d402bfcde5792a8b531b3a82669585' '?1?1?1?1?1?1?1?1'
 ```
 #### 5-7位MD5加密的大小写字母+数字破解
 ```bash
 #Admin88 的 MD5 值为 2792e40d60bac94b4b163b93566e65a9,这里面定义了个自定义规则 -1，此时 ?1 就表示 ?l?u?d，即大小写字母 + 数字
-hashcat -a 3 -m 0 -1 '?l?u?d' --force  '2792e40d60bac94b4b163b93566e65a9' --increment --increment-min 5 --increment-max 7 '?1?1?1?1?1?1?1' -O
+hashcat -a 3 -m 0 -1 '?l?u?d' --force  '2792e40d60bac94b4b163b93566e65a9' --increment --increment-min 5 --increment-max 7 '?1?1?1?1?1?1?1'
 ```
 #### 不知道目标密码的构成情况下使用?a进行破解
 ```bash
-hashcat -a 3 19b9a36f0cab6d89cd4d3c21b2aa15be --increment --increment-min 1 --increment-max 8 ?a?a?a?a?a?a?a?a
+hashcat -a 3 '19b9a36f0cab6d89cd4d3c21b2aa15be' --increment --increment-min 1 --increment-max 8 ?a?a?a?a?a?a?a?a
 ```
 #### 使用字典破解
 ```bash
-hashcat -a 0 e10adc3949ba59abbe56e057f20f883e password.txt
+hashcat -a 0 'e10adc3949ba59abbe56e057f20f883e' password.txt
 ```
 ## Mysql4.1/Mysql5
 
 ```bash
 #select authentication_string from mysql.user 查看当前数据库中的密码哈希值
-hashcat -a 3 -m 300 --force 6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 ?d?d?d?d?d?d
+hashcat -a 3 -m 300 --force '6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9' ?d?d?d?d?d?d
 ```
 ## sha512crypt$6$,SHA512(Unix)
 ```bash
@@ -235,7 +235,7 @@ hashcat -a 3 -m 1800 --force 'qiyou:$6$QDq75ki3$jsKm7qTDHz/xBob0kF1Lp170Cgg0i5Ts
 ## NTLM
 #### 掩码破解Windows LM Hash
 ```bash
-hashcat -a 3 -m 3000 F0D412BD764FFE81AAD3B435B51404EE ?l?l?l?l?l
+hashcat -a 3 -m 3000 'F0D412BD764FFE81AAD3B435B51404EE' ?l?l?l?l?l
 ```
 
 #### 字典破解Windows NTLM Hash
@@ -244,7 +244,7 @@ hashcat -a 0 -m 1000 --force 'e19ccf75ee54e06b06a5907af13cef42' password.txt
 ```
 ## MSSQL
 ```bash
-hashcat -a 3 -m 132 --force 0x01008c8006c224f71f6bf0036f78d863c3c4ff53f8c3c48edafb ?l?l?l?l?l?d?d?d
+hashcat -a 3 -m 132 --force '0x01008c8006c224f71f6bf0036f78d863c3c4ff53f8c3c48edafb' ?l?l?l?l?l?d?d?d
 ```
 ## WordPress
 ```bash
@@ -254,7 +254,7 @@ hashcat -a 3 -m 400 --force '$P$BYEYcHEj3vDhV1lwGBv6rpxurKOEWY/' ?d?d?d?d?d?d
 ## Discuz
 ```bash
 #其密码加密方式 md5(md5($pass).$salt)
-hashcat -a 3 -m 2611 --force 14e1b600b1fd579f47433b88e8d85291: ?d?d?d?d?d?d
+hashcat -a 3 -m 2611 --force '14e1b600b1fd579f47433b88e8d85291:' ?d?d?d?d?d?d
 ```
 ## RAR压缩密码
 下载哈希破解工具[John](http://openwall.info/wiki/_media/john/johntheripper-v1.8.0.12-jumbo-1-bleeding-e6214ceab-2018-02-07-win-x64.7z)，此工具用于提取文件的hash值
