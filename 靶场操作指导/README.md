@@ -101,17 +101,31 @@ cd hashcat-6.2.6
 ## 参数-m hash类型对照表
 部分常见的hash类型如下,如果不指定类型，则默认是MD5，要想了解所有的参数可到[hashcat wiki](https://hashcat.net/wiki/doku.php?id=hashcat)上去看，或者直接hashcat --help查看hash对照表
 
+## 参数-d 指定设备类型
+
+```
+ # | Device Type
+ ===+=============
+  1 | CPU
+  2 | GPU
+  3 | FPGA, DSP, Co-Processor
+
+```
+
+
 ## 掩码破解
 常见掩码字符如下：
 ```
-l | abcdefghijklmnopqrstuvwxyz          纯小写字母
-u | ABCDEFGHIJKLMNOPQRSTUVWXYZ          纯大写字母
-d | 0123456789                  纯数字
-h | 0123456789abcdef                常见小写子目录和数字
-H | 0123456789ABCDEF                常见大写字母和数字
-s |  !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~       特殊字符
-a | ?l?u?d?s                    键盘上所有可见的字符
-b | 0x00 - 0xff                 可能是用来匹配像空格这种密码的
+  ? | Charset
+ ===+=========
+  l | abcdefghijklmnopqrstuvwxyz [a-z]          纯小写字母
+  u | ABCDEFGHIJKLMNOPQRSTUVWXYZ [A-Z]          纯大写字母
+  d | 0123456789                 [0-9]          纯数字
+  h | 0123456789abcdef           [0-9a-f]       常见小写子目录和数字
+  H | 0123456789ABCDEF           [0-9A-F]       常见大写字母和数字
+  s |  !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~         特殊字符
+  a | ?l?u?d?s                                  键盘上所有可见的字符
+  b | 0x00 - 0xff                               可能是用来匹配像空格这种密码的
 ```
 
 掩码设置举例：
