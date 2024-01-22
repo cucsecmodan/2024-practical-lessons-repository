@@ -3,3 +3,4 @@
 [hashcat破解wifi密码](https://www.cnblogs.com/wutou/p/17682334.html)  
 [hashcat Wiki](https://hashcat.net/wiki)  
 [什么是 hash？ - 腾讯技术工程的回答 - 知乎](https://www.zhihu.com/question/26762707/answer/890181997)
+[Hash 'hccapxfile': Separator unmatched](https://hashcat.net/forum/thread-10357.html)

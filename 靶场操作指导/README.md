@@ -1,7 +1,6 @@
 # 3.12-Practical-利用Hashcat爆破各类密码
 
-------
-
+-----
 # 简介
 Hashcat是自称世界上最快的密码恢复工具。它在2015年之前拥有专有代码库，但现在作为免费软件发布。适用于Linux，OS X和Windows的版本可以使用基于CPU或基于GPU的变体。支持hashcat的散列算法有Microsoft LM哈希，MD4，MD5，SHA系列，Unix加密格式，MySQL和Cisco PIX等。  
 
@@ -26,13 +25,14 @@ Intel GPUs on Linux require "OpenCL 2.0 GPU Driver Package for Linux" (2.0 or la
 Intel GPUs on Windows require "OpenCL Driver for Intel Iris and Intel HD Graphics"
 NVIDIA GPUs require "NVIDIA Driver" (367.x or later)
 ```
--------
+
+------
 
 # 基础知识
 密码破解是一种尝试获取未经授权访问的信息或系统的活动，通常包括尝试破解密码以便进入受保护的账户或系统。以下是密码破解的基础知识。
 
 ### 哈希值（Hash Value）：
-定义： 哈希值是通过哈希函数将输入数据转换为固定长度的字符串的过程。哈希函数是一种单向函数，即无法从哈希值反推出原始输入。对于在互联网世界里传送的文件来说，如何标志一个文件的身份非常重要。比如说我们下载一个文件，文件的下载过程中会经过很多网络服务器、路由器的中转，如何保证这个文件就是我们所需要的呢？我们不可能去一一检测这个文件的每个字节，也不能简单地利用文件名、文件大小这些极容易伪装的信息，这时候，我们就需要一种指纹一样的标志来检查文件的可靠性，这种指纹就是我们现在所用的Hash算法(也叫散列算法)，即唯一的一个hash值对应着唯一的一个文件。更为详细的关于hash的介绍可以参考文章[什么是 hash](https://www.zhihu.com/question/26762707/answer/890181997)。  
+定义： 哈希值是通过哈希函数将输入数据转换为固定长度的字符串的过程。哈希函数是一种单向函数，即无法从哈希值反推出原始输入。更为详细的关于hash的介绍可以参考文章[什么是 hash](https://www.zhihu.com/question/26762707/answer/890181997)。  
 应用： 存储密码时，通常会存储其哈希值而不是明文密码。这样，即使数据库泄露，攻击者也无法直接获得用户的密码。
 
 ### 盐值（Salt）
