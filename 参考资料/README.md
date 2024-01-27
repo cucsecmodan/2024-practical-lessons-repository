@@ -1,0 +1,5 @@
+[命令执行漏洞](https://www.cnblogs.com/LeeeBoom/p/12378537.html)  
+[漏洞预警 | Windows远程桌面服务远程命令执行漏洞](https://cloud.tencent.com/developer/article/1490135)  
+[Windows漏洞利用之MS08-067远程代码执行漏洞复现及深度防御](https://bbs.huaweicloud.com/blogs/308930?utm_source=cnblog&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)  
+[命令执行漏洞绕过小技巧 - windows](https://www.bilibili.com/read/cv18997146/)  
+[Windows远程执行cmd命令的9种方法](https://cloud.tencent.com/developer/article/1487725)  
