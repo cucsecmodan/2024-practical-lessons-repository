@@ -8,4 +8,6 @@
 [Windows远程文件下载执行的15种姿势](https://juejin.cn/post/6950955189147074573)  
 [域渗透-哈希传递攻击(Pass The Hash/Key)](https://zhuanlan.zhihu.com/p/472019671)  
 [域渗透前置知识](https://www.cnblogs.com/mujj/articles/4623409.html)   
-[丢掉 PSEXEC 来横向渗透](https://www.anquanke.com/post/id/84938)
+[丢掉 PSEXEC 来横向渗透](https://www.anquanke.com/post/id/84938)  
+[Cobalt Strike最实用的24条命令](https://cloud.tencent.com/developer/article/2371031)  
+[Cobalt Strike](https://wiki.wgpsec.org/knowledge/intranet/Cobalt-Strike.html)  
