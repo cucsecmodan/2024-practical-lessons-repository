@@ -52,7 +52,6 @@ ThinkPHP命令执行
 whoami #正常执行
 wh""o^am"i #正常执行
 ((((Wh^o^am""i)))) #正常执行
-w"""""""""""""hoa^m""i #正常执行
 w"""""""""""""hoa^^m""i #执行错误
 ```
 
@@ -225,9 +224,9 @@ FOR /F ["options"] %variable IN ('command') DO command [command-parameters]
 
 --
 
-假如文件aa.txt中有如下内容：
-第1行第1列 第1行第2列
-第2行第1列 第2行第2列
+假如文件aa.txt中有如下内容：  
+第1行第1列 第1行第2列  
+第2行第1列 第2行第2列  
  
 ```bash
 #只会输出aa.txt，并不会读取其中的内容

