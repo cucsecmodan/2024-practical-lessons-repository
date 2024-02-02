@@ -184,7 +184,9 @@ WMI 135
 Winrm 5985(HTTP)&5986(HTTPS)
 ```
 ### 1.WMI执行命令方式,无回显:
+Windows Management Instrumentation (WMI) 是一种 Windows 操作系统管理的基础设施，它提供了一种执行管理任务的标准方式，包括执行命令。`wmic` 是 Windows Management Instrumentation Command-line 工具，它允许在命令行中执行 WMI 查询和操作。
 ```bash
+# 这个命令将在远程计算机上创建一个新的进程，执行 cmd.exe /c ipconfig>d:\result.txt
 wmic /node:192.168.1.158 /user:pt007 /password:admin123  process call create "cmd.exe /c ipconfig>d:\result.txt"
 ```
 ### 2.使用Hash直接登录Windows（HASH传递）:
