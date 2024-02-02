@@ -244,7 +244,7 @@ reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalA
 winrs -r:http://192.168.1.152:5985 -u:pt007 -p:admin123 "whoami /groups"
 ```
 * 注意事项:  
-1.`UAC` 是 `Windows` 中的一种安全机制，用于防止未经授权的更改系统设置。当 `UAC` 启用时，即使用户有管理员权限，也可能需要以管理员身份运行某些命令。请确保有适当的权限来在远程系统上执行命令。 
+1.`UAC` 是 `Windows` 中的一种安全机制，用于防止未经授权的更改系统设置。当 `UAC` 启用时，即使用户有管理员权限，也可能需要以管理员身份运行某些命令。请确保有适当的权限来在远程系统上执行命令。  
 2.在远程系统上启用 WinRM 时，请注意系统安全性，确保仅受信任的用户或系统可以访问 WinRM。  
 3.需要注意防火墙设置，确保 WinRM 的端口（默认为 5985 或 5986）是允许通信的。  
 
