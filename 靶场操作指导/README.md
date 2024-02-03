@@ -301,7 +301,7 @@ MS08-067漏洞是通过MSRPC over SMB通道调用Server服务程序中的NetPath
 受害机：Windows XP SP1镜像
 攻击机：Kali系统
 
-第一步，在虚拟机中安装Windows XP SP1系统和Kali系统。
+第一步，在虚拟机中安装Windows XP SP1系统和Kali系统。Windows XP SP1镜像下载参考：[Windows XP SP1可用的原版iso](https://blog.csdn.net/ddmtjegb12140/article/details/101920059)，安装参考[使用VMware虚拟机安装Windows XP系统](https://blog.csdn.net/linxinfa/article/details/112768896)  
 
 第二步，虚拟机两个系统之间能够相互通信。
 Kali：192.168.44.136

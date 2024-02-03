@@ -296,7 +296,8 @@ https://github.com/nccgroup/WMIcmd/releases
 
 --
 
-### 5.Cobalt strkie远程执行命令与hash传递攻击:
+### 5.Cobalt strkie远程执行命令与hash传递攻击:  
+[Cobalt Strike](https://wiki.wgpsec.org/knowledge/intranet/Cobalt-Strike.html)  
 
 --
 
@@ -369,7 +370,10 @@ Windows Server 2003
 
 ### 二、环境搭建
 受害机：Windows XP SP1镜像  
-攻击机：Kali系统  
+攻击机：Kali系统   
+
+Windows XP SP1镜像下载参考：[Windows XP SP1可用的原版iso](https://blog.csdn.net/ddmtjegb12140/article/details/101920059)  
+系统安装参考[使用VMware虚拟机安装Windows XP系统](https://blog.csdn.net/linxinfa/article/details/112768896)  
 
 --
 
