@@ -306,15 +306,15 @@ https://www.freebuf.com/vuls/203881.html
 Kali：192.168.163.128  
 Win XP：192.168.163.137  
 
-![测试连通性](/img/PING.jpg)
+![测试连通性](\img\PING.jpg)
 
 第三步，打开Windows XP系统，确定445端口开启。如下图所示，在Win XP的CMD中输入 `netstat -an` 查看端口445是否打开。  
 
-![port445stat](/img/port445.jpg)  
+![port445stat](\img\port445.jpg)  
 
 第四步，关闭Windows XP系统的防火墙。  
 
-![closewaf](/img/waf.jpg)  
+![closewaf](\img\waf.jpg)  
 
 做完这些初始准备之后，我们开始利用Kali系统进行漏洞复现。  
 ### 三、利用Metasploit复现漏洞
@@ -371,7 +371,7 @@ pwd
 ```
 注意：Windows XP SP1系统是中文而不是英文的，需要对ms08_067_netapi_ser2003_zh.rb处理。  
 
-![getshell](/img/getshell.jpg)  
+![getshell](\img\getshell.jpg)  
 
 第六步，在目标主机上创建文件夹及文件。
 ```bash
