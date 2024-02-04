@@ -307,7 +307,7 @@ MS08-067漏洞是通过MSRPC over SMB通道调用Server服务程序中的NetPath
 Kali：192.168.163.128  
 Win XP：192.168.163.137  
 
-第三步，打开Windows XP系统，确定445端口开启。如下图所示，在Win XP的CMD中输入“netstat -sn”查看端口445是否打开。  
+第三步，打开Windows XP系统，确定445端口开启。如下图所示，在Win XP的CMD中输入 `netstat -an` 查看端口445是否打开。  
 
 第四步，关闭Windows XP系统的防火墙。  
 
