@@ -4,6 +4,7 @@
 [漏洞预警 | Windows远程桌面服务远程命令执行漏洞](https://cloud.tencent.com/developer/article/1490135)  
 [Windows漏洞利用之MS08-067远程代码执行漏洞复现及深度防御](https://bbs.huaweicloud.com/blogs/308930?utm_source=cnblog&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)  
 [MS08-067漏洞的十年回顾](https://www.freebuf.com/articles/network/191787.html)  
+[Metasploit学习笔记——网络服务渗透攻击](https://www.cnblogs.com/wkzb/p/12283195.html)  
 [Windows远程执行cmd命令的方法](https://blog.csdn.net/q1352483315/article/details/100714820)  
 [常见的远程执行命令方式整理](https://www.xazlsec.com/index.php/archives/1244/)  
 [Windows远程文件下载执行的15种姿势](https://juejin.cn/post/6950955189147074573)  

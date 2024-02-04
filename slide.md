@@ -383,8 +383,8 @@ Windows XP SP1镜像下载参考：[Windows XP SP1可用的原版iso](https://bl
 exploit
 session 1
 ipconfig
-screenshot
-hashdump
+screenshot #msf方法
+hashdump #msf方法
 ```
 
 ---
