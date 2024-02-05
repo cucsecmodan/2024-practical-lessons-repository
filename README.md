@@ -5,6 +5,7 @@
 
 - [奇安信-课程清单](https://alidocs.dingtalk.com/i/nodes/14lgGw3P8vvXxBBqirdGDG1685daZ90D?utm_scene=person_space)
 - [实操环境清单](https://alidocs.dingtalk.com/i/nodes/o14dA3GK8g5LQbbxs09PrDnKV9ekBD76?utm_scene=person_space)
+- [从业人员培训课程清单](https://alidocs.dingtalk.com/i/nodes/93NwLYZXWygvxBBqieM7a7jLJkyEqBQm)
 
 ---
 
