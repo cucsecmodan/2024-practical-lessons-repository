@@ -48,9 +48,7 @@
 --
 
 ##### 2.2.1.1 包过滤技术
-包过滤是在IP层实现的防火墙技术，典型的过滤规则表示格式由“规则号、匹配条件、匹配操作”三部分组成，一般的包过滤防火墙都用源IP地址、目的IP地址、源端口号、目的端口号、协议类型（UDP、TCP、ICMP）、通信方向、规则运算符来描述过滤规则条件。如下图是windows11 配置包过滤的地方。  
-
-![package_filter](./img/filter.jpg)  
+包过滤是在IP层实现的防火墙技术，典型的过滤规则表示格式由“规则号、匹配条件、匹配操作”三部分组成，一般的包过滤防火墙都用源IP地址、目的IP地址、源端口号、目的端口号、协议类型（UDP、TCP、ICMP）、通信方向、规则运算符来描述过滤规则条件。  
 
 --
 
@@ -94,7 +92,6 @@ Windows 防火墙是基于主机的防火墙，它包含在操作系统中，在
 --
 
 #### 2.3.3 windows防火墙配置文件  
-Windows 防火墙提供三个网络配置文件：域、专用和公用。
 * 域网络：   
 域网络配置文件在检测到域控制器的可用性时，会自动应用于已加入 `Active Directory` 域的设备，无法手动设置此网络配置文件。  
 * 专用网络：  
@@ -104,7 +101,14 @@ Windows 防火墙提供三个网络配置文件：域、专用和公用。
 
 ---
 
-### 2.4 防火墙常见厂商  
+### 2.4 windows防火墙简易测试，以MS17-010为例 
+
+* 受影响的版本：
+目前已知受影响的 Windows 版本包括但不限于：WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0  
+
+---
+
+### 2.5 防火墙常见厂商  
 ```
 1.Juniper/NetScreen  
 NetScreen由三位留美的清华学子创建，其防火墙和VPN产品无论从性能指标还是质量上都位居世界前列。 
@@ -178,38 +182,18 @@ Windows的用户帐户是对计算机用户身份的识别，且本地用户帐�
 #### 3.2.1 用户账户
 
 Windows的默认用户账户用于特殊用途，一般不用更修改其权限。拥有的权限大小：System > Administrator > Uaer > Guest：  
-|  默认用户账户   |  含义  | 说明 |
-|  :----  | :----  | :---- |
-| Administrator  | 	管理员用户 | 管理计算机(域)的内置帐户（默认禁用） |
-| DefaultAccount  | 默认账户 | 系统管理的用户帐户（默认禁用） |
-| defaultuser0  | 默认用户 | （默认禁用） |
-| Guest  | 来宾用户 | 提供给访客人员使用（默认禁用） |
-| WDAGUtilityAccount  | Windows Defender用户 | 系统为 Windows Defender 应用程序防护方案管理和使用的用户帐户（默认禁用） |
+![account](./img/account.jpg)  
 
 --
 
 #### 3.2.2 用户账户的查看、创建和提升权限
 
-|  序号   |  命令 | 命令说明 |
-|  :----  | :----  | :---- |
-| 1  | 	net user | 查看系统账户 |
-| 2  | net user Cm0001 123456 /add | 创建用户是：Cm0001 密码是：123456的账户  |
-| 3  | net user Cm0001 987654 | 	修改用户Cm0001的密码为987654 |
-| 4  | net user Cm0001 | 查看用户Cm0001的属性 |
-| 5  | net  localgroup   administrators Cm0001 /add | 提升用户Cm0001的权限为管理员 |
-| 6  | 	net user Cm0001 123456 /del | 删除用户Cm0001 |
+![account_setting](./img/account_setting.jpg)
 
 --
 
 #### 3.2.3 组账户
-windows内置的组账户：  
-|  内置的组账户名称   |  含义 | 说明 |
-|  :----  | :----  | :---- |
-| Administrators | 	管理员组 | 默认情况下Administrator中的用户对计算机 / 域有不受限制的完全访问权，功能有：1.管理文件。2.更改系统安全设置。 |
-| Guests | 来宾用户组 | 提供给没有用户帐户但是需要访问本地计算机内资源的用户使用，该组的成员无法永久地改变其桌面的工作环境。该组最常见的默认成员为用户帐号Guest。  |
-| Power Users  | 功能用户组 | 	组内的用户具备比Users组更多的权利，但是比Administrators组拥有的权利更少一些，例如，可以：创建、删除、更改本地用户帐户；创建、删除、管理本地计算机内的共享文件夹与共享打印机；自定义系统设置，例如更改计算机时间、关闭计算机等。 |
-| Users  | 标准用户组 | Users组账户权限低于Adiministraotrs组的账户，但高于Guests组账户。 |
-| Remote Desktop Users  | 远程桌面用户组 | 组内的成员拥有远程桌面登录的权限；默认Administrators组内的成员都拥有远程桌面的权限 。Remote Desktop Users组的作用就是保障远程桌面服务的安全运行，一旦赋予Administrator组远程桌面的权限，就像是为入侵者省略了提权的步骤。相对于改变用户组权限，将需要连接远程桌面的用户分到Remote Desktop Users组中是一中更加安全的方式 |  
+![group](./img/group.jpg)
 
 --
 
@@ -240,13 +224,8 @@ net localgroup "remote desktop users" hack /del
 
 ### 3.3 访问控制  
   
-windows的访问控制：  
-|  访问控制名称   |  含义 | 说明 |
-|  :----  | :----  | :---- |
-| Access Control List  | 	访问控制列表(ACL) | 访问权限决定着某个用户可以访问的文件和目录，对于每一个文件和文件夹，由安全描述符(SD)规定了安全数据，安全描述符决定安全设置是否对当前目录有效，或者它可以被传递给其他文件和目录 |
-| Access Control environment  | 访问控制环境（ACE） | 访问控制项ACE，是指访问控制实体，用于指定特定用户/组的访问权限，是权限控制的最小单位。具有1.完全控制；2.修改文件夹；3.读取和执行；4.列出文件夹目录；5.写入等权限；  |
-| New Technology File System  | 文件系统（NTFS） | 		文件夹的NTFS权限 (文件夹内的文件或文件夹会默认继承上一级目录的权限)。1.完全控制2.修改3.读取和执行4.读取5.写入等权限 |
-| Security Identifiers | 安全标识符（SID） | SID的说明：安全标识符是标识用户、组和计算机帐户的唯一的号码。在第一次创建该帐户时，将给网络上的每一个帐户发布一个唯一的 SID。 |
+windows的访问控制：    
+![control](./img/fangwengkongzhi.jpg)
 
 ---
 
@@ -272,13 +251,11 @@ windows的访问控制：
 
 ### 4.2 Windows Defender简介
 
-`Windows Defender` 的功能如下：  
-
 * 实时保护：`Windows Defender` 的核心功能是提供实时保护，即时检测并阻止恶意软件的执行。  
 * 完整系统扫描：用户可以随时进行全盘扫描，确保系统中没有潜在的威胁。  
 * 自定义扫描：除了全盘扫描外，`Windows Defender` 还支持用户自定义扫描，可选择特定文件夹或文件进行检查。  
-* 防火墙和网络保护：`Windows Defender` 还包含防火墙和网络保护功能，加强对网络攻击和潜在威胁的防范。  
-* 性能和健康报告：用户可以查看性能和健康报告，了解系统的安全状态，以及 `Windows Defender` 对潜在威胁的处理情况。  
+* 防火墙和网络保护：`Windows Defender` 还包含防火墙和网络保护功能。  
+* 性能和健康报告：用户可以查看性能和健康报告，以及 `Windows Defender` 对潜在威胁的处理情况。  
 
 ---
 

