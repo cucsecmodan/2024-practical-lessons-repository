@@ -12,6 +12,12 @@
 
 [防火墙的知识点](https://blog.csdn.net/WinnieBear_/article/details/125878572?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522170727223716800184110086%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=170727223716800184110086&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-5-125878572-null-null.142^v99^control&utm_term=Windows%E9%98%B2%E7%81%AB%E5%A2%99%E7%9A%84%E7%BC%BA%E9%99%B7&spm=1018.2226.3001.4187)  
 
+[使用组策略配置规则](https://learn.microsoft.com/zh-cn/windows/security/operating-system-security/network-security/windows-firewall/configure?cid=kerryherger)  
+
+[Windows服务器设置出入站规则](https://help.fanruan.com/finereport/doc-view-4091.html)  
+
+[电脑怎么禁止软件联网](https://baijiahao.baidu.com/s?id=1777637852092066946&wfr=spider&for=pc)  
+
 [Windows的权限（用户、组和访问控制）](https://blog.csdn.net/fuhanghang/article/details/128786603)  
 
 [Windows Defender 是什么](https://www.dians.net/thread-2835.htm)  
