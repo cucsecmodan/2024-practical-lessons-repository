@@ -20,6 +20,10 @@
 
 [Windows的权限（用户、组和访问控制）](https://blog.csdn.net/fuhanghang/article/details/128786603)  
 
+[计算机基础-软件篇-7用户与用户组](https://www.bilibili.com/video/BV1BS4y1v7JZ/?p=12&spm_id_from=pageDriver)  
+
+[windows10添加删除用户图文教程](https://www.xitongcheng.com/jiaocheng/win10_article_11915.html)  
+
 [Windows Defender 是什么](https://www.dians.net/thread-2835.htm)  
 
 [Win10新电脑不需要装杀毒软件：有两个理由](https://news.mydrivers.com/1/680/680935.htm)  

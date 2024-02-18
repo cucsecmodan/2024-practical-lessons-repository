@@ -89,8 +89,9 @@ Windows 防火墙是基于主机的防火墙，它包含在操作系统中，在
 公共网络配置文件在设计时考虑了公共网络（如 Wi-Fi 热点、咖啡店、机场、酒店等）的安全性。它是身份不明网络的默认配置文件。 
 
 --
- 
+
 #### 2.3.3 windows防火墙规则  
+
 防火墙规则提供了广泛的条件选择来标识流量，包括：  
 * 应用程序、服务或程序名称
 * 源和目标 IP 地址
@@ -164,9 +165,29 @@ WatchGuard公司是全球排名前五位的专业生产防火墙的公司之一�
 ---
 
 ## 三、权限管理简介
-目的：本节介绍 Windows 中的访问控制，即授权用户、组和计算机访问网络或计算机上的对象的过程。  
+目的：本节介绍 Windows 的权限管理，如何创建用户，添加用户到组等技巧。
+* 实现权限管理的三个设计：
+    * "安全标识符"（Security Identifier,SID）
+    * "访问控制列表"（Access Control List，ACL）
+    * 安全主体（Security Principal）
 
 ---
+
+### 3.1安全标识符SID
+系统是通过SID对用户进行识别的，而不是很多用户认为的"用户名称"。
+查看用户、组、服务或计算机的SID值，可以使用 "Whoami"工具来执行:
+```shell
+#查看系统当前用户的SID
+whoami /user
+
+#查看所有用户的SID
+wmic useraccount get name,sid
+```
+
+### 3.2 访问控制  
+windows的访问控制：    
+![control](./img/fangwengkongzhi.jpg)
+### 3.3 安全主体 
 
 ### 3.1 用户与组介绍  
 
@@ -228,12 +249,6 @@ net localgroup "remote desktop users"
 net localgroup "remote desktop users" hack /del  
 ```
 
----
-
-### 3.3 访问控制  
-  
-windows的访问控制：    
-![control](./img/fangwengkongzhi.jpg)
 
 ---
 
